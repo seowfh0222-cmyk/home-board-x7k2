@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AOI & MIKI</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AOI & MIKI">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f2eee7;--card:#fffdf9;--text:#22252a;--sub:#7b7f87;--line:#e7e2d9;--a:#2f6fdb;--b:#d9558a;--ok:#2a9d6f;--warn:#d98a1c;--bad:#d14343}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1115;--card:#181d24;--text:#eef1f4;--sub:#8f99a6;--line:#262d36;--a:#6ea2ff;--b:#ff86b0;--ok:#4cc790;--warn:#f0b04a;--bad:#ff7a7a}}
+:root[data-theme="dark"]{--bg:#0e1115;--card:#181d24;--text:#eef1f4;--sub:#8f99a6;--line:#262d36;--a:#6ea2ff;--b:#ff86b0;--ok:#4cc790;--warn:#f0b04a;--bad:#ff7a7a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;padding:14px 14px 86px}
+button,input,select{font:inherit;color:var(--text)}
+button{cursor:pointer}
+h2{margin:0 0 10px;font-size:13px;letter-spacing:.12em;color:var(--sub);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px 18px}
+/* hero */
+.hero{padding:6px 4px 4px}
+.time{font-size:76px;font-weight:300;line-height:1;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.date{display:flex;align-items:baseline;gap:12px;margin-top:6px}
+.date b{font-size:30px;font-weight:600}.date span{font-size:20px;color:var(--sub)}
+/* person cards */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pc{text-align:left;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:20px;padding:12px 14px;min-height:96px;display:flex;flex-direction:column;gap:2px}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.pn{font-weight:800;letter-spacing:.08em;color:var(--c);font-size:17px}.pd{font-size:12px;color:var(--sub)}
+.pl{font-size:28px;font-weight:800;line-height:1.2}.pl.none{color:var(--sub);font-weight:500;font-size:20px}
+.pm{font-size:14px;color:var(--sub);word-break:break-all}
+.big{min-height:150px;padding:16px 18px}.big .pl{font-size:38px}.big .pm{font-size:16px}.big .pn{font-size:20px}
+.sec{margin-top:14px}
+/* week */
+.wr{display:grid;grid-template-columns:54px 1fr 1fr;gap:6px;align-items:stretch;margin-bottom:6px}
+.wr.head{font-size:12px;font-weight:800;letter-spacing:.1em;text-align:center}
+.wd{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;font-size:12px;color:var(--sub);padding:4px 0}
+.wd b{font-size:20px;color:var(--text);line-height:1.1}.wd.su b,.wd.su{color:var(--bad)}.wd.sa b,.wd.sa{color:var(--a)}
+.wr.now .wd{background:var(--text);color:var(--bg)}.wr.now .wd b{color:var(--bg)}
+.wc{border:1px solid var(--line);border-left:4px solid var(--c);background:var(--card);border-radius:12px;padding:6px 9px;text-align:left;min-height:44px;display:flex;flex-direction:column;justify-content:center}
+.wl{font-size:15px;font-weight:700}.wm{font-size:11px;color:var(--sub);word-break:break-all}
+/* tasks */
+.add{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.add input,.add select{border:1px solid var(--line);background:transparent;border-radius:12px;padding:10px 11px}
+.add input[type=text]{flex:1 1 100%;font-size:17px}
+.q{border:1px solid var(--line);background:transparent;border-radius:999px;padding:8px 12px;font-size:13px}
+.btn{border:0;background:var(--text);color:var(--bg);border-radius:12px;padding:10px 18px;font-weight:700}
+.task{display:grid;grid-template-columns:34px 1fr 34px;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.ck{width:30px;height:30px;border-radius:50%;border:2px solid var(--sub);background:transparent;font-size:16px;line-height:1;color:#fff}
+.task.done{opacity:.45}.task.done .tt{text-decoration:line-through}.task.done .ck{background:var(--ok);border-color:var(--ok)}
+.tt{font-size:18px;font-weight:600}.meta{font-size:13px;color:var(--sub);margin-top:2px;display:flex;gap:10px;flex-wrap:wrap}
+.over{color:var(--bad);font-weight:700}.today{color:var(--warn);font-weight:700}
+.pri{font-weight:700}.p3{color:var(--bad)}.p2{color:var(--warn)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+.x{border:0;background:transparent;color:var(--sub);font-size:22px}
+.link{border:0;background:transparent;color:var(--sub);font-size:13px;text-decoration:underline;padding:8px 0}
+.empty{color:var(--sub);padding:10px 0}
+/* sheet */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center;z-index:9}
+.ov.on{display:flex}
+.sh{background:var(--card);width:100%;max-width:540px;border-radius:24px 24px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px))}
+.sh h3{margin:0 0 12px;font-size:20px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:2px solid var(--c);color:var(--c);background:transparent;border-radius:999px;padding:10px 16px;font-weight:700}
+.chip.on{background:var(--c);color:#fff}
+.sh input{width:100%;border:1px solid var(--line);background:transparent;border-radius:12px;padding:12px;font-size:17px;margin-bottom:12px}
+.row{display:flex;gap:10px}.row .btn{flex:1}.row .gh{background:transparent;color:var(--text);border:1px solid var(--line)}
+/* tabs (phone) */
+.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 10px calc(8px + env(safe-area-inset-bottom,0px));gap:6px;z-index:5}
+.tabs button{flex:1;border:0;background:transparent;border-radius:14px;padding:10px 0;font-size:14px;font-weight:700;color:var(--sub)}
+.tabs button.on{background:var(--text);color:var(--bg)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;display:none;z-index:20;max-width:90%}
+@media (max-width:899px){
+ #app[data-tab=today] .s-week,#app[data-tab=today] .s-task,#app[data-tab=week] .s-today,#app[data-tab=week] .s-task,#app[data-tab=task] .s-today,#app[data-tab=task] .s-week{display:none}
+ #app>div{display:block}
+}
+/* iPad landscape: 一画面ダッシュボード */
+@media (min-width:900px){
+ body{padding:18px;overflow:hidden}
+ .tabs{display:none}
+ #app{height:100%;display:grid;grid-template-columns:1.05fr 1fr;gap:18px}
+ #app>div{display:flex;flex-direction:column;min-height:0;gap:14px}
+ .time{font-size:clamp(96px,11vw,140px)}.date b{font-size:36px}.date span{font-size:24px}
+ .sec{margin-top:0}
+ .s-week{flex:0 0 auto}
+ .s-task{flex:1;min-height:0;display:flex;flex-direction:column}
+ #tl{overflow:auto;flex:1;min-height:0}
+ .ov{align-items:center}.sh{border-radius:24px}
+ .pair .pc:not(.big){min-height:88px}
+}
+#login .sh{border-radius:24px;max-width:380px}
+#login input{margin-bottom:10px}
+#lm{color:var(--bad);font-size:14px;min-height:20px;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div id="app" data-tab="today">
+  <div>
+    <div class="hero s-today"><div class="time" id="time">--:--</div><div class="date"><b id="dt"></b><span id="dw"></span></div></div>
+    <div class="s-today"><h2>TODAY</h2><div class="pair" id="td"></div></div>
+    <div class="s-today sec"><h2>TOMORROW</h2><div class="pair" id="tm"></div></div>
+  </div>
+  <div>
+    <div class="card s-week" id="wk"></div>
+    <div class="card s-task">
+      <h2>TASKS</h2>
+      <div class="add">
+        <input type="text" id="nt" placeholder="タスクを入力" maxlength="80">
+        <input type="date" id="nd">
+        <button class="q" id="q0">今日</button><button class="q" id="q1">明日</button>
+        <select id="nw"><option value="a">担当:AOI</option><option value="b">担当:MIKI</option><option value="both">担当:二人</option></select>
+        <select id="np"><option value="3">優先:高</option><option value="2" selected>優先:中</option><option value="1">優先:低</option></select>
+        <button class="btn" id="na">追加</button>
+      </div>
+      <div id="tl"><div class="empty">読み込み中…</div></div>
+      <button class="link" id="clr">完了済みを消す</button> <button class="link" id="lo">ログアウト</button>
+    </div>
+  </div>
+</div>
+<nav class="tabs"><button data-t="today" class="on">今日・明日</button><button data-t="week">一週間</button><button data-t="task">タスク</button></nav>
+<div class="ov" id="ov"><div class="sh">
+  <h3 id="st"></h3>
+  <div class="chips" id="sc"></div>
+  <input type="text" id="sm" placeholder="一言メモ(例:19時から飲み会)" maxlength="40">
+  <div class="row"><button class="btn gh" id="cl">閉じる</button><button class="btn gh" id="rm">クリア</button><button class="btn" id="sv">保存</button></div>
+</div></div>
+<div class="ov on" id="login"><div class="sh">
+  <h3>ログイン</h3>
+  <input type="email" id="le" placeholder="メールアドレス" autocomplete="username">
+  <input type="password" id="lp" placeholder="パスワード" autocomplete="current-password">
+  <div id="lm"></div>
+  <button class="btn" style="width:100%" id="lg">ログイン</button>
+</div></div>
+<div id="toast"></div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getFirestore,collection,doc,setDoc,updateDoc,deleteDoc,onSnapshot} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyB_cA02SE0Expeo5BfNd91cSmLuyDzB9JA",authDomain:"board-x7k2.firebaseapp.com",projectId:"board-x7k2",storageBucket:"board-x7k2.firebasestorage.app",messagingSenderId:"947724161296",appId:"1:947724161296:web:c5e9ad07fa027f10979595"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),fs=getFirestore(app);
+const mkdb=()=>({doc:p=>({set:d=>setDoc(doc(fs,p),d),update:d=>updateDoc(doc(fs,p),d),delete:()=>deleteDoc(doc(fs,p))}),
+ collection:n=>({onSnapshot:(cb,er)=>onSnapshot(collection(fs,n),s=>cb({docs:s.docs.map(d=>({id:d.id,data:()=>d.data()}))}),er)})});
+const $=s=>document.querySelector(s);
+const h=(t,c,x,p)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;if(p)p.appendChild(e);return e};
+const DOW=['日','月','火','水','木','金','土'],pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const NAME={a:'AOI',b:'MIKI'},COL={a:'var(--a)',b:'var(--b)'};
+const STAT=['在宅','午前出社','午後出社','終日出社','外出','休み'];
+const LC={'在宅':'#3b9e72','午前出社':'#d9981f','午後出社':'#e0742c','終日出社':'#cf4b4b','外出':'#8a63d2','休み':'#5b87c7'};
+let db=null,plans={},tasks=[],last='',sh={};
+const plan=(d,w)=>plans[ymd(d)+'_'+w]||{};
+const md=d=>(d.getMonth()+1)+'/'+d.getDate()+'('+DOW[d.getDay()]+')';
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',3500)}
+async function guard(fn){if(!db){toast('共有データに接続できません');return false}try{await fn();return true}catch(e){toast('書き込めません。共有設定(編集権限)を確認してください');return false}}
+
+function tick(){const d=new Date();$('#time').textContent=pad(d.getHours())+':'+pad(d.getMinutes());$('#dt').textContent=(d.getMonth()+1)+'月'+d.getDate()+'日';$('#dw').textContent=DOW[d.getDay()]+'曜日';if(ymd(d)!==last){last=ymd(d);renderAll()}}
+setInterval(tick,1000);
+
+function pcard(w,d,big){const p=plan(d,w),c=h('button','pc'+(big?' big':''));c.style.setProperty('--c',COL[w]);
+ const hd=h('div','ph',null,c);h('span','pn',NAME[w],hd);h('span','pd',md(d),hd);
+ const l=h('div','pl',p.label||'未設定',c);if(p.label)l.style.color=LC[p.label];else l.classList.add('none');
+ h('div','pm',p.memo?'📝 '+p.memo:'',c);c.onclick=()=>openSheet(w,d);return c}
+function renderPeople(){const t=new Date(),n=addDays(t,1);
+ $('#td').replaceChildren(pcard('a',t,1),pcard('b',t,1));$('#tm').replaceChildren(pcard('a',n,0),pcard('b',n,0))}
+function renderWeek(){const w=$('#wk');w.replaceChildren();h('h2',null,'WEEK',w);
+ const hd=h('div','wr head',null,w);h('span',null,'',hd);['a','b'].forEach(k=>{const s=h('span',null,NAME[k],hd);s.style.color=COL[k]});
+ for(let i=0;i<7;i++){const d=addDays(new Date(),i),r=h('div','wr'+(i?'':' now'),null,w);
+  const g=d.getDay(),dd=h('div','wd'+(g==0?' su':g==6?' sa':''),null,r);h('b',null,d.getDate(),dd);h('span',null,DOW[g],dd);
+  ['a','b'].forEach(k=>{const p=plan(d,k),c=h('button','wc',null,r);c.style.setProperty('--c',COL[k]);
+   const l=h('span','wl',p.label||'—',c);if(p.label)l.style.color=LC[p.label];if(p.memo)h('span','wm',p.memo,c);c.onclick=()=>openSheet(k,d)})}}
+
+function openSheet(w,d){sh={w,d,label:plan(d,w).label||''};$('#st').textContent=NAME[w]+'  '+md(d);$('#sm').value=plan(d,w).memo||'';
+ const c=$('#sc');c.replaceChildren();
+ STAT.forEach(l=>{const b=h('button','chip'+(sh.label===l?' on':''),l,c);b.style.setProperty('--c',LC[l]);
+  b.onclick=()=>{sh.label=sh.label===l?'':l;[...c.children].forEach(x=>x.classList.toggle('on',x.textContent===sh.label))}});
+ $('#ov').classList.add('on')}
+const closeSheet=()=>$('#ov').classList.remove('on');
+$('#cl').onclick=closeSheet;$('#ov').addEventListener('click',e=>{if(e.target.id==='ov')closeSheet()});
+const pid=()=>'plans/'+ymd(sh.d)+'_'+sh.w;
+$('#sv').onclick=async()=>{const m=$('#sm').value.trim();const ok=await guard(async()=>{if(!sh.label&&!m){if(plans[ymd(sh.d)+'_'+sh.w])await db.doc(pid()).delete()}else await db.doc(pid()).set({label:sh.label,memo:m})});if(ok)closeSheet()};
+$('#rm').onclick=async()=>{const ok=await guard(async()=>{if(plans[ymd(sh.d)+'_'+sh.w])await db.doc(pid()).delete()});if(ok)closeSheet()};
+
+function dueInfo(due){if(!due)return['',''];const t=new Date();t.setHours(0,0,0,0);const d=new Date(due+'T00:00:00'),n=Math.round((d-t)/864e5);
+ if(n<0)return['期限切れ '+(-n)+'日','over'];if(n==0)return['今日まで','today'];if(n==1)return['明日まで',''];return[(d.getMonth()+1)+'/'+d.getDate()+'まで(あと'+n+'日)','']}
+function renderTasks(){const box=$('#tl');box.replaceChildren();
+ const k=t=>t.due||'9999',list=[...tasks].sort((x,y)=>(x.done-y.done)||(k(x)<k(y)?-1:k(x)>k(y)?1:0)||(y.pri-x.pri));
+ if(!list.length){h('div','empty','タスクはありません',box);return}
+ list.forEach(t=>{const row=h('div','task'+(t.done?' done':''),null,box);
+  const ck=h('button','ck',t.done?'✓':'',row);ck.onclick=()=>guard(()=>db.doc('tasks/'+t.id).update({done:!t.done}));
+  const mid=h('div',null,null,row);h('div','tt',t.title,mid);const m=h('div','meta',null,mid);
+  const [dt,dc]=dueInfo(t.due);if(dt)h('span',t.done?'':dc,dt,m);
+  const w=h('span',null,null,m);const dot=h('span','dot',null,w);dot.style.background=t.who=='a'?'var(--a)':t.who=='b'?'var(--b)':'var(--sub)';w.append(t.who=='both'?'二人':NAME[t.who]||'');
+  h('span','pri p'+t.pri,t.pri==3?'！！！':t.pri==2?'！！':'！',m);
+  const x=h('button','x','×',row);x.setAttribute('aria-label','削除');x.onclick=()=>guard(()=>db.doc('tasks/'+t.id).delete())})}
+$('#q0').onclick=()=>{$('#nd').value=ymd(new Date())};$('#q1').onclick=()=>{$('#nd').value=ymd(addDays(new Date(),1))};
+$('#na').onclick=()=>{const title=$('#nt').value.trim();if(!title)return;
+ guard(async()=>{await db.doc('tasks/t'+Date.now()).set({title,due:$('#nd').value||'',who:$('#nw').value,pri:+$('#np').value,done:false});$('#nt').value='';$('#nd').value=''})};
+$('#nt').addEventListener('keydown',e=>{if(e.key==='Enter')$('#na').click()});
+$('#clr').onclick=()=>guard(async()=>{for(const t of tasks.filter(t=>t.done))await db.doc('tasks/'+t.id).delete()});
+
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{$('#app').dataset.tab=b.dataset.t;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));scrollTo(0,0)});
+
+function renderAll(){renderPeople();renderWeek();renderTasks()}
+tick();renderAll();
+let unsubs=[];
+function startSync(){db=mkdb();const er=()=>toast('読み込めません。ログイン中のアカウントの権限を確認してください');
+ unsubs=[db.collection('plans').onSnapshot(s=>{plans={};s.docs.forEach(d=>plans[d.id]=d.data());renderPeople();renderWeek()},er),
+ db.collection('tasks').onSnapshot(s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));renderTasks()},er)]}
+function stopSync(){unsubs.forEach(f=>f&&f());unsubs=[];db=null;plans={};tasks=[];renderAll()}
+onAuthStateChanged(auth,u=>{$('#login').classList.toggle('on',!u);if(u)startSync();else stopSync()});
+const doLogin=async()=>{$('#lm').textContent='';try{await signInWithEmailAndPassword(auth,$('#le').value.trim(),$('#lp').value);$('#lp').value=''}catch(e){$('#lm').textContent=/invalid|wrong|user-not-found|credential/.test(e.code||'')?'メールアドレスかパスワードが違います':'ログインできません('+(e.code||'エラー')+')'}};
+$('#lg').onclick=doLogin;$('#lp').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+$('#lo').onclick=()=>signOut(auth);
+</script>
+</body>
+</html>
